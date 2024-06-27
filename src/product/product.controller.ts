@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from './dto/product.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Controller('products')
 export class ProductController {
@@ -36,12 +37,14 @@ export class ProductController {
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
+	@Auth()
 	@Post()
 	async createProduct() {
 		return this.productService.create();
 	}
 
 	@UsePipes(new ValidationPipe())
+	@Auth()
 	@HttpCode(200)
 	@Put(':id')
 	async updateProduct(@Param('id') id: string, @Body() dto: ProductDto) {
@@ -49,6 +52,7 @@ export class ProductController {
 	}
 
 	@HttpCode(200)
+	@Auth()
 	@Delete(':id')
 	async deleteProduct(@Param('id') id: string) {
 		return this.productService.delete(id);
